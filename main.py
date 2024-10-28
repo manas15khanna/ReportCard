@@ -1,6 +1,7 @@
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 import subprocess
+import sys
 
 # Some fixed rules for the CSV:
 # Must have a Name column, roll number column,
