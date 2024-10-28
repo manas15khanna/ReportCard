@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\definecolor{schoolColor}{RGB}{255, 0, 0} % Replace with your school's color
+
+\begin{document}
+
+\begin{center}
+% \includegraphics[width=3cm]{school_logo.png} % Replace with your school logo
+
+\Large\textbf{Report Card}
+\large{Midsems 2024, Sem 3}
+
+\normalsize
+Name: {{ name }} \hfill Roll No.: {{ roll_no }}
+\end{center}
+
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Subject} & \textbf{Marks Obtained} & \textbf{Rank} \\
+\hline
+{% for i in range(len(subjects)) %}
+{{ subjects[i] }} & {{ scores[i] }} & {{ subrank[i] }}\\ 
+{% endfor %}
+\hline
+\end{tabularx}
+
+\vspace{1cm}
+
+\begin{tikzpicture}
+\node[draw, rounded corners, fill=schoolColor!20, minimum width=5cm, minimum height=1cm] (box) {
+    Overall Performance: {{ average_score }} \hfill
+    Rank: {{ rank }}
+};
+\end{tikzpicture}
+
+\newpage
+
+\begin{center}
+  \Large Statistics
+\end{center}
+
+\end{document}
