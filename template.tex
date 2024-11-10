@@ -23,7 +23,7 @@ Name: {{ name }} \hfill Roll No.: {{ roll_no }}
 \hline
 \textbf{Subject} & \textbf{Marks Obtained} & \textbf{Rank} \\
 \hline
-{% for i in range(len(subjects)) %}
+{% for i in range(length) %}
 {{ subjects[i] }} & {{ scores[i] }} & {{ subrank[i] }}\\ 
 {% endfor %}
 \hline
