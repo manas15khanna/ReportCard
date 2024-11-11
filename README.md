@@ -6,7 +6,7 @@ The main program is in python, which generates and compiles LaTeX Report cards a
 
 ## Using the program
 
-To use the program, 
+To use the program, ensure python3 is installed on your system. Once python is installed, run the following commands
 
 ```
 git clone https://github.com/Gurmukh-Singh-4253/ReportCardGenerationSystem
