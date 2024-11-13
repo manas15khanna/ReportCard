@@ -13,7 +13,7 @@ data = pd.read_csv(path)
 subjects = [x for x in data.columns if x != "name" and x != "roll_no"]
 
 for i in subjects:
-    data[f'rank_{i}'] = data[i].rank(method='min',ascending=False)
+    data[f'rank_{i}'] = data[i].rank(method='min', ascending=False)
 
 data['average_score'] = data[subjects].mean(axis=1)
 data['rank'] = data['average_score'].rank(method="min", ascending=False)
@@ -30,14 +30,14 @@ os.system("mkdir charts || rm charts/*")
 
 # Generating Graphs...
 for i in subjects:
-    counts, bins, patches = plt.hist(data[i], bins=[0, 5, 10, 15, 20, 25], color='skyblue')
+    counts, bins, patches = plt.hist(data[i], bins=[x for x in range(0, max(data[i])+5, 5)], color='skyblue')
 
     for j in range(5):
         for k in range(j):
             patches[k].set_facecolor('skyblue')
         patches[j].set_facecolor('blue')
 
-        plt.xlabel(i)
+        plt.xlabel("Marks")
         plt.ylabel("Frequency")
         plt.savefig(f"charts/{i}_{j}.png")
     plt.cla()

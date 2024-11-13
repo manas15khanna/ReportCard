@@ -1,9 +1,12 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
-\usepackage{geometry}
+\usepackage[margin=1.5cm]{geometry}
 \usepackage{tabularx}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{float}
+\usepackage{subcaption}
+
 
 \definecolor{schoolColor}{RGB}{255, 0, 0} % Replace with your school's color
 
@@ -44,9 +47,22 @@ Name: {{ name }} \hfill Roll No.: {{ roll_no }}
   \Large Statistics
 \end{center}
 
-\begin{center}
-{% for i in range(length)%}
-    \includegraphics[width=0.5\textwidth]{ charts/{{ subjects[i] }}_{{ min(4,scores[i] // 5)}}.png}
+\begin{figure}[h]
+  \centering
+{% for i in range(0,length,2)%}
+  \begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[width=1\linewidth]{charts/{{ subjects[i] }}_{{ min(4,scores[i] // 5)}}.png}
+    \caption{ {{ subjects[i] }} }
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    {% if i+1 < length%}
+  \centering
+    \includegraphics[width=1\linewidth]{charts/{{ subjects[i+1] }}_{{ min(4,scores[i+1] // 5)}}.png}
+    \caption{ {{ subjects[i+1] }} }
+  \end{subfigure}
+    {% endif %}
+  % \subfloat[{{ subjects[i] }}]{\includegraphics[width=0.48\linewidth]{ charts/{{ subjects[i] }}_{{ min(4,scores[i] // 5)}}.png}}
 {% endfor %}
-\end{center}
+\end{figure}
 \end{document}
