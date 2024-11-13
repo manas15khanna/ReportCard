@@ -1,5 +1,5 @@
 import pandas as pd
-# from matplotlib import plot
+import matplotlib.pyplot as plt
 from jinja2 import Environment, FileSystemLoader
 import subprocess
 import os
@@ -8,14 +8,12 @@ import os
 # Must have a Name column, roll number column,
 # and the rest of the columns would be subjects and marks.
 path = input("Enter the path to the CSV file: ")
-if path == '':
-    path = 'test.csv'
 
 data = pd.read_csv(path)
 subjects = [x for x in data.columns if x != "name" and x != "roll_no"]
 
 for i in subjects:
-    data[f'rank_{i}'] = data[i].rank(ascending=False)
+    data[f'rank_{i}'] = data[i].rank(method='min',ascending=False)
 
 data['average_score'] = data[subjects].mean(axis=1)
 data['rank'] = data['average_score'].rank(method="min", ascending=False)
@@ -24,7 +22,25 @@ data['rank'] = data['average_score'].rank(method="min", ascending=False)
 env = Environment(loader=FileSystemLoader('.'))
 template = env.get_template('template.tex')
 
-os.system("rm out/*")
+function_dict = {"min": min}
+template.globals.update(function_dict)
+
+os.system("mkdir out || rm out/*")
+os.system("mkdir charts || rm charts/*")
+
+# Generating Graphs...
+for i in subjects:
+    counts, bins, patches = plt.hist(data[i], bins=[0, 5, 10, 15, 20, 25], color='skyblue')
+
+    for j in range(5):
+        for k in range(j):
+            patches[k].set_facecolor('skyblue')
+        patches[j].set_facecolor('blue')
+
+        plt.xlabel(i)
+        plt.ylabel("Frequency")
+        plt.savefig(f"charts/{i}_{j}.png")
+    plt.cla()
 
 for index, row in data.iterrows():
     latex_code = template.render(
@@ -44,7 +60,7 @@ for index, row in data.iterrows():
 
     # Compile LaTeX
     subprocess.run(['pdflatex', '-output-directory=out', f"out/report_card_{row['roll_no']}.tex"])
+    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.aux'])
+    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.log'])
+    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.tex'])
 
-os.system("rm out/*.aux")
-os.system("rm out/*.tex")
-os.system("rm out/*.log")
