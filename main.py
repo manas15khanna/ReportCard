@@ -77,11 +77,15 @@ for index, row in data.iterrows():
     with open(f"out/report_card_{row['roll_no']}.tex", 'w') as f:
         f.write(latex_code)
 
-    # Compile LaTeX
-    subprocess.run(['pdflatex', '-output-directory=out', f"out/report_card_{row['roll_no']}.tex"])
-    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.aux'])
-    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.log'])
-    subprocess.run(['rm', f'out/report_card_{row['roll_no']}.tex'])
+    if row['roll_no'] == 2:
+        subprocess.run(['pdflatex', '-output-directory=out', f"out/report_card_{row['roll_no']}.tex"])
+
+        # Clean up auxiliary files for report_card_2
+        for ext in ['aux', 'log', 'tex']:
+            os.remove(f"out/report_card_{row['roll_no']}.{ext}")
+
+    else:
+        os.remove(f"out/report_card_{row['roll_no']}.tex")
 
 summary = []
 for i in subjects:
@@ -99,3 +103,5 @@ summary.append(f"Standard deviation: {data['average_score'].std()}")
 with open("out/Comprehensive_analysis.txt", 'w') as f:
     f.writelines(summary)
     f.close()
+
+# os.system("find ~/Developer/ReportCard/out -type f ! -name 'report_card_2.pdf' -exec rm -v {} +")
