@@ -15,19 +15,19 @@
 \begin{center}
 % \includegraphics[width=3cm]{school_logo.png} % Replace with your school logo
 
-\Large\textbf{Report Card}
+\Large\textbf{Report Card}\\
 \large{Midsems 2024, Sem 3}
 
 \normalsize
 Name: {{ name }} \hfill Roll No.: {{ roll_no }}
 \end{center}
 
-\begin{tabularx}{\textwidth}{|l|X|X|}
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{Subject} & \textbf{Marks Obtained} & \textbf{Rank} \\
+\textbf{Subject} & \textbf{Marks Obtained} & \textbf{Rank} & \textbf{Percentile}\\
 \hline
 {% for i in range(length) %}
-{{ subjects[i] }} & {{ scores[i] }} & {{ subrank[i] }}\\ 
+{{ subjects[i] }} & {{ scores[i] }} & {{ subrank[i] }} & {{ subpercentile[i] }}\\ 
 {% endfor %}
 \hline
 \end{tabularx}
@@ -37,7 +37,8 @@ Name: {{ name }} \hfill Roll No.: {{ roll_no }}
 \begin{tikzpicture}
 \node[draw, rounded corners, fill=schoolColor!20, minimum width=5cm, minimum height=1cm] (box) {
     Overall Performance: {{ average_score }} \hfill
-    Rank: {{ rank }}
+    Rank: {{ rank }} \hfill 
+    Percentile: {{ percentile }}
 };
 \end{tikzpicture}
 
@@ -47,22 +48,28 @@ Name: {{ name }} \hfill Roll No.: {{ roll_no }}
   \Large Statistics
 \end{center}
 
+{% for i in range(0,length,2)%}
 \begin{figure}[h]
   \centering
-{% for i in range(0,length,2)%}
   \begin{subfigure}{.5\textwidth}
   \centering
     \includegraphics[width=1\linewidth]{charts/{{ subjects[i] }}_{{ min(4,scores[i] // 5)}}.png}
     \caption{ {{ subjects[i] }} }
   \end{subfigure}%
-  \begin{subfigure}{.5\textwidth}
     {% if i+1 < length%}
+  \begin{subfigure}{.5\textwidth}
   \centering
     \includegraphics[width=1\linewidth]{charts/{{ subjects[i+1] }}_{{ min(4,scores[i+1] // 5)}}.png}
     \caption{ {{ subjects[i+1] }} }
   \end{subfigure}
     {% endif %}
-  % \subfloat[{{ subjects[i] }}]{\includegraphics[width=0.48\linewidth]{ charts/{{ subjects[i] }}_{{ min(4,scores[i] // 5)}}.png}}
-{% endfor %}
 \end{figure}
+{% endfor %}
+\begin{figure}
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \includegraphics[width=1\linewidth]{charts/average_score_{{ int(min(4, average_score // 5))}}.png}
+    \caption{ Overall Score }
+  \end{subfigure}
+\end{figure}%
 \end{document}
